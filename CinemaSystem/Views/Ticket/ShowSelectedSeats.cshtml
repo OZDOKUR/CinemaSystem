@@ -1,0 +1,33 @@
+﻿@model CinemaSystem.Models.SeatPlanViewModel
+@{
+    ViewData["Title"] = "ShowSelectedSeats";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+
+<h1>Seçilen Kutucuklar:</h1>
+@if (!string.IsNullOrEmpty(Model.SelectedSeats))
+{
+    var selectedSeatsList = Model.SelectedSeats.Split(',').ToList();
+    <ul>
+        @foreach (var seat in selectedSeatsList)
+        {
+            <li>@seat</li>
+        }
+    </ul>
+    <h2>Toplam Tutar: @Model.TotalPrice TL</h2>
+    <form asp-action="Payment" method="post">
+        <input type="hidden" name="SelectedSeats" value="@Model.SelectedSeats" />
+        <input type="hidden" name="TotalPrice" value="@Model.TotalPrice" />
+        <button type="submit">Ödemeyi Tamamla</button>
+    </form>
+}
+else
+{
+    <p>Hiçbir kutucuk seçilmedi.</p>
+}
+
+

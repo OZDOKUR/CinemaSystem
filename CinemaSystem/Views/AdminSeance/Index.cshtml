@@ -1,0 +1,110 @@
+﻿@model List<Entities.Concrete.Seance>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<a href="~/AdminSeance/AddNewSeance/">
+    <button class="btn btn-info">Yeni Seans Ekle +</button>
+</a>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Yorumlar</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>Film</th>
+                                    <th>Salon</th>
+                                    <th>Tarih</th>
+                                    <th>Saat</th>
+                                    <th>Dolu Koltuklar</th>
+                                    <th>#Düzenle</th>
+                                    <th>#Sil</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                            {
+                                <tbody>
+                                    <tr class="gradeX">
+                                        <td>@item.Movie.Name</td>
+                                        <td>@item.MovieTheater.Name</td>
+                                        <td>@item.Date.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</td>
+                                        <td>@item.Hours.ToString(@"hh\:mm")</td>
+                                        <td>@item.SeatsOccupied</td>
+                                        <td>
+                                            <a href="/AdminSeance/EditSeance/@item.Id">
+                                                <button class="btn btn-outline-info">Düzenle</button>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-outline-danger" data-toggle="modal" data-target="#deleteSeanceModal" data-id="@item.Id">Sil</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            }
+                            <tfoot>
+                                <tr>
+                                    <th>Film</th>
+                                    <th>Salon</th>
+                                    <th>Tarih</th>
+                                    <th>Saat</th>
+                                    <th>Dolu Koltuklar</th>
+                                    <th>#Düzenle</th>
+                                    <th>#Sil</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteSeanceModal" tabindex="-1" role="dialog" aria-labelledby="deleteSeanceModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="deleteForm" asp-action="DeleteSeance" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteSeanceModalLabel">Seansı Sil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="DeleteId" name="Id" />
+                    <p>Bu seansı silmek istediğinizden emin misiniz?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#deleteSeanceModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+
+            var modal = $(this);
+            modal.find('#DeleteId').val(id);
+        });
+    </script>
+}

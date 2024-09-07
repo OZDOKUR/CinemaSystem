@@ -1,0 +1,88 @@
+﻿@model UserSignInViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/all.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/animate.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/flaticon.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/odometer.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/nice-select.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/main.css">
+    <link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+
+    <title>Giriş Yap</title>
+
+
+</head>
+
+<body>
+
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <section class="account-section bg_img" data-background="~/MovieTemp/assets/images/account/account-bg.jpg">
+        <div class="container">
+            <div class="padding-top padding-bottom">
+                <div class="account-area">
+                    <div class="section-header-3">
+                        <h2 class="cate">Hoş Geldiniz</h2>
+                    </div>
+                    <form method="post" class="account-form">
+                        <div class="form-group">
+                            <label for="email2">E-posta<span>*</span></label>
+                            <input type="text" name="UserName" asp-for="@Model.UserName" class="form-control form--control" >
+                        </div>
+                        <div class="form-group">
+                            <label for="pass3">Şifre<span>*</span></label>
+                            <input type="password" name="Password" asp-for="@Model.Password" class="form-control form--control">
+                        </div>
+
+                        <div class="form-group text-center">
+                            <input type="submit" value="Giriş Yap">
+                        </div>
+                    </form>
+                    <div class="option">
+                        Hesabınız Yok Mu? <a href="~/Register/Index">Şimdi Kaydolun</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <script src="~/MovieTemp/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="~/MovieTemp/assets/js/modernizr-3.6.0.min.js"></script>
+    <script src="~/MovieTemp/assets/js/plugins.js"></script>
+    <script src="~/MovieTemp/assets/js/bootstrap.min.js"></script>
+    <script src="~/MovieTemp/assets/js/isotope.pkgd.min.js"></script>
+    <script src="~/MovieTemp/assets/js/magnific-popup.min.js"></script>
+    <script src="~/MovieTemp/assets/js/owl.carousel.min.js"></script>
+    <script src="~/MovieTemp/assets/js/wow.min.js"></script>
+    <script src="~/MovieTemp/assets/js/countdown.min.js"></script>
+    <script src="~/MovieTemp/assets/js/odometer.min.js"></script>
+    <script src="~/MovieTemp/assets/js/viewport.jquery.js"></script>
+    <script src="~/MovieTemp/assets/js/nice-select.js"></script>
+    <script src="~/MovieTemp/assets/js/main.js"></script>
+</body>
+</html>

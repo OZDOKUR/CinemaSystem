@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <!-- Bootstrap and other CSS -->
+    <link href="~/AdminPanel/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/AdminPanel/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/AdminPanel/css/animate.css" rel="stylesheet">
+    <link href="~/AdminPanel/css/style.css" rel="stylesheet">
+
+    <!-- Additional CSS if needed -->
+    @RenderSection("Styles", required: false)
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <br />
+                <br />
+                <ul class="nav metismenu" id="side-menu">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="~/AdminDashboard/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Gelirler</span></a>
+                        </li>
+                    }
+                    <li>
+                        <a href="~/AdminUser/User"><i class="fa fa-diamond"></i> <span class="nav-label">Kullanıcılar</span></a>
+                    </li>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a href="~/AdminUser/Worker"><i class="fa fa-diamond"></i> <span class="nav-label">Çalışanlar</span></a>
+                        </li>
+                    }
+                    <li>
+                        <a href="~/AdminMovie/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Filmler</span></a>
+                    </li>
+                    <li>
+                        <a href="~/AdminMovieTheater/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Salonlar</span></a>
+                    </li>
+                    <li>
+                        <a href="~/AdminSeance/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Seanslar</span></a>
+                    </li>
+                    <li>
+                        <a href="~/AdminCategory/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Türler</span></a>
+                    </li>
+                    <li>
+                        <a href="~/AdminStar/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Oyuncular</span></a>
+                    </li>
+                    <li>
+                        <a href="~/AdminMovieStar/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Oyuncular Ve Filmleri</span></a>
+                    </li>
+                    <li>
+                        <a href="~/Home/Index"><i class="fa fa-diamond"></i> <span class="nav-label">Ana Sayfaya Dön</span></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <form id="logoutForm" asp-controller="Login" asp-action="LogOut" method="post">
+                                <button type="submit" class="dropdown-item">
+                                    <i class="fa fa-sign-out"></i> Çıkış Yap
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            @RenderBody()
+
+            <!-- Footer -->
+            <div class="footer">
+                <div class="float-right">
+                    10GB of <strong>250GB</strong> Free.
+                </div>
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2018
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/AdminPanel/js/jquery-3.1.1.min.js"></script>
+    <script src="~/AdminPanel/js/popper.min.js"></script>
+    <script src="~/AdminPanel/js/bootstrap.js"></script>
+    <script src="~/AdminPanel/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/AdminPanel/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/AdminPanel/js/inspinia.js"></script>
+    <script src="~/AdminPanel/js/plugins/pace/pace.min.js"></script>
+
+    @RenderSection("Scripts", required: false) <!-- Scripts bölümü -->
+</body>
+
+</html>

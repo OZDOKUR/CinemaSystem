@@ -1,0 +1,146 @@
+﻿@model CinemaSystem.Models.StarViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<a data-toggle="modal" data-target="#addStarModal">
+    <button class="btn btn-success">Yeni Oyuncu Ekle +</button>
+</a>
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        @foreach (var item in Model.StarList)
+        {
+            <div class="col-lg-3">
+                <div class="contact-box center-version">
+                    <a><img src="@item.Picture" alt="movie"></a>
+
+                    <div class="contact-box-footer">
+                        <h3 class="m-b-xs"><strong>@item.Name</strong></h3>
+                        <div class="m-t-xs btn-group">
+                            <button class="btn btn-info" data-toggle="modal" data-target="#editStarModal" data-id="@item.Id" data-name="@item.Name" data-picture="@item.Picture">Düzenle</button>
+                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteStarModal" data-id="@item.Id">Sil</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Star Modal -->
+<div class="modal fade" id="addStarModal" tabindex="-1" role="dialog" aria-labelledby="addStarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="AddNewStar" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addStarModalLabel">Yeni Oyuncu Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name">Oyuncu Adı</label>
+                        <input type="text" class="form-control" id="Name" name="star.Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="star.Picture">Oyuncu Resmi</label>
+                        <input type="file" name="PictureFile" class="form-control-file" accept="image/*" required />
+                        <span asp-validation-for="star.Picture" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-primary">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Star Modal -->
+<div class="modal fade" id="editStarModal" tabindex="-1" role="dialog" aria-labelledby="editStarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="EditStar" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editStarModalLabel">Oyuncu Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="EditId" name="star.Id" />
+                    <div class="form-group">
+                        <label for="EditName">Oyuncu Adı</label>
+                        <input type="text" class="form-control" id="EditName" name="star.Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="star.Picture">Oyuncu Resmi</label>
+                        <input type="file" id="EditPictureFile" name="PictureFile" class="form-control-file" accept="image/*" />
+                        <span asp-validation-for="star.Picture" class="text-danger"></span>
+                    </div>
+                    <img id="EditPicture" src="" alt="current picture" class="img-thumbnail" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteStarModal" tabindex="-1" role="dialog" aria-labelledby="deleteStarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="deleteForm" asp-action="DeleteStar" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteStarModalLabel">Oyuncuyu Sil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="DeleteId" name="Id" />
+                    <p>Bu oyuncuyu silmek istediğinizden emin misiniz?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#editStarModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var picture = button.data('picture');
+
+            var modal = $(this);
+            modal.find('#EditId').val(id);
+            modal.find('#EditName').val(name);
+            modal.find('#EditPicture').attr('src', picture);
+        });
+
+        $('#deleteStarModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+
+            var modal = $(this);
+            modal.find('#DeleteId').val(id);
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

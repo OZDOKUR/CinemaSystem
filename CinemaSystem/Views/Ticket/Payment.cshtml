@@ -1,0 +1,33 @@
+﻿@model CinemaSystem.Models.SeatPlanViewModel
+@{
+    ViewData["Title"] = "Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+    ViewData["Title"] = "Payment Confirmation";
+}
+
+<h1>Ödeme Onayı</h1>
+<p>Seçilen Kutucuklar:</p>
+@if (!string.IsNullOrEmpty(Model.SelectedSeats))
+{
+    var selectedSeatsList = Model.SelectedSeats.Split(',').ToList();
+    <ul>
+        @foreach (var seat in selectedSeatsList)
+        {
+            <li>@seat</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Hiçbir kutucuk seçilmedi.</p>
+}
+
+<p>Toplam Tutar: @Model.TotalPrice TL</p>
+<p>Ödemeniz başarıyla alınmıştır. Teşekkür ederiz!</p>
+
+

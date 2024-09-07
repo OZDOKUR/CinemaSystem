@@ -1,0 +1,150 @@
+﻿@model Entities.Concrete.Movie
+@{
+    ViewData["Title"] = "Description";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+        .inline-block-style {
+            display: flex;
+
+        }
+        </style>
+    </head>
+<body>
+   
+
+    <section class="details-banner bg_img" data-background="@Model.Background">
+        <div class="container">
+            <div class="details-banner-wrapper">
+                <div class="details-banner-thumb">
+                    <img src="@Model.Picture" alt="movie">
+                    <a href="@Model.Trailer" class="video-popup">
+                        <img src="~/MovieTemp/assets/images/movie/video-button.png" alt="movie">
+                    </a>
+                </div>
+                <div class="details-banner-content offset-lg-3">
+                    <h3 class="title">@Model.Name</h3>
+                    <div class="tags">
+                        <a href="#0">@(@Model.Is3D ? "3D" : "2D")</a>
+                        <a href="#0">@(@Model.IsDubbed ? "Dublaj" : "Altyazılı")</a>
+                        <a>@(@Model.IsLocal ? "Yerli":"Yabancı" )</a>
+                    </div>
+                    <a href="#0" class="button">@Model.Category.Name</a>
+                    <div class="social-and-duration">
+                        <div class="duration-area">
+
+                            <div class="item">
+                                <i class="far fa-clock"></i><span>@Model.ScreenTime</span>
+                            </div>
+                        </div>
+                        <ul class="social-share">
+                            <li><a href="#0"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#0"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#0"><i class="fab fa-pinterest-p"></i></a></li>
+                            <li><a href="#0"><i class="fab fa-linkedin-in"></i></a></li>
+                            <li><a href="#0"><i class="fab fa-google-plus-g"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="book-section bg-one">
+        <div class="container">
+            <div class="book-wrapper offset-lg-3">
+                <div class="left-side">
+                    <div class="item">
+                        <div class="item-header">
+                            <div class="thumb">
+                                <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/171_Imdb_logo_logos-512.png" alt="movie">
+                            </div>
+                            <div class="counter-area">
+                                <h5 class="title">@Model.Score</h5>
+                            </div>
+                        </div>
+                    </div>
+                  
+                   
+                   
+                </div>
+                <a asp-controller="Ticket" asp-action="Reserve" asp-route-name="@Model.Name" class="custom-button">Bilet Al</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="movie-details-section padding-top padding-bottom">
+        <div class="container">
+            <div class="row justify-content-center flex-wrap-reverse mb--50">
+                <div class="col-lg-12 mb-50">
+                    <div class="movie-details">
+                        
+                        <div class="tab summery-review">
+                            <div class="tab-area">
+                                <div class="tab-item active">
+                                    <div class="item">
+                                        <h5 class="sub-title">@Model.Name</h5>
+                                        <p>@Model.Description</p>
+                                    </div>
+                                    <div class="item">
+                                        <div class="header">
+                                            <h5 class="sub-title">Yönetmen</h5>
+                                        </div>
+                                        <div class="">
+                                            <div class="cast-item">
+                                                <div class="cast-thumb">
+                                                    <a href="#0">
+                                                        <img src="@Model.DirectorPicture" alt="cast">
+                                                    </a>
+                                                </div>
+                                                <div class="cast-content">
+                                                    <h6 class="cast-title"><a href="#0">@Model.Director</a></h6>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="item">
+                                        <div class="header">
+                                            <h5 class="sub-title">Oyuncular</h5>
+                                           
+                                        </div>
+                                        <div class=@(Model.MovieStars.Count >5 ? "casting-slider-two owl-carousel": "inline-block-style")>
+                                            @foreach (var movieStar in Model.MovieStars)
+                                            {
+                                                var star = movieStar.Star;
+                                                <div class="cast-item">
+                                                    <div class="cast-thumb">
+                                                        <a href="#0">
+                                                            <img src="@star.Picture" alt="cast">
+                                                        </a>
+                                                    </div>
+                                                    <div class="cast-content">
+                                                        <p class="cast-title" style="color: white; font-weight: bold;">
+                                                            <a>@star.Name</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                         
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</body>
+
+</html>
+

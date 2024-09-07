@@ -1,0 +1,136 @@
+﻿@model List<Entities.Concrete.AppUser>
+@{
+    ViewData["Title"] = "User";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+ <head>
+        <script>
+            function formatPhoneNumber(phoneNumber) {
+                var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+                var match = cleaned.match(/^(\d{3})(\d{3})(\d{2})(\d{2})$/);
+                if (match) {
+                    return '(' + match[1] + ') ' + match[2] + ' ' + match[3] + ' ' + match[4];
+                }
+                return phoneNumber;
+            }
+        </script>
+    </head>
+<body>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Yorumlar</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Isim</th>
+                                        <th>Soyisim </th>
+                                        <th>Email</th>
+                                        <th>Cinsiyet</th>
+                                        <th>Telefon Numarası</th>
+                                        <th>Doğum Tarihi</th>
+                                        <th>#Düzenle</th>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <th>İşlemler</th>
+                                        }
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model)
+                                {
+                                    <tbody>
+                                        <tr class="gradeX">
+                                            <td>@item.Name.ToUpper()</td>
+                                            <td>@item.Surname.ToUpper()</td>
+                                            <td>@item.Email</td>
+                                            <td>@(item.Gender == "male" ? "Erkek" : item.Gender == "female" ? "Kadın" : "Diğer")</td>
+                                            <td><script>document.write(formatPhoneNumber('@item.PhoneNumber'))</script></td>
+                                            <td>@item.BirthDate.ToString("dd MMMM yyyy", new System.Globalization.CultureInfo("tr-TR"))</td>
+                                            <td><a href="/AdminUser/EditUser/@item.Id" class="btn btn-s btn-info">Düzenle</a></td>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <td>
+                                                    <button type="button" class="btn btn-warning" onclick="confirmRoleChange('@item.Id')">Çalışan Yap</button>
+                                                </td>
+                                            }
+                                        </tr>
+                                    </tbody>
+                                }
+                                <tfoot>
+                                    <tr>
+                                        <th>Isim</th>
+                                        <th>Soyisim </th>
+                                        <th>Email</th>
+                                        <th>Cinsiyet</th>
+                                        <th>Telefon Numarası</th>
+                                        <th>Doğum Tarihi</th>
+                                        <th>#Düzenle</th>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <th>İşlemler</th>
+                                        }
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Onayla</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bu kullanıcıyı Çalışan yapmayı onaylıyor musunuz?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hayır</button>
+                <button type="button" class="btn btn-primary" id="confirmButton">Evet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="updateUserRoleForm" asp-action="UpdateUserRole" method="post" style="display:none;">
+    <input type="hidden" name="userId" id="userIdInput" />
+</form>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    var userIdToUpdate = null;
+
+    function confirmRoleChange(userId) {
+        userIdToUpdate = userId; // Kullanıcı ID'sini sakla
+        $('#confirmModal').modal('show'); // Modal'i göster
+    }
+
+    $('#confirmButton').on('click', function () {
+        $('#userIdInput').val(userIdToUpdate); // Kullanıcı ID'sini gizli inputa koy
+        $('#updateUserRoleForm').submit(); // Formu gönder
+    });
+
+
+</script>

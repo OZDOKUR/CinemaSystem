@@ -1,0 +1,133 @@
+﻿@model CinemaSystem.Models.MovieViewModel
+@{
+    ViewData["Title"] = "Film Listesi";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<button class="btn btn-success" data-toggle="modal" data-target="#addMovieModal">Yeni Film Ekle +</button>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        @foreach (var item in Model.MovieList)
+        {
+            <div class="col-lg-3">
+                <div class="contact-box center-version">
+                    <a asp-controller="Movie" asp-action="Description" asp-route-name="@item.Name">
+                        <img src="@item.Picture" alt="movie">
+                    </a>
+                    <div class="contact-box-footer">
+                        <h3 class="m-b-xs"><strong>@item.Name</strong></h3>
+                        <div class="m-t-xs btn-group">
+                            <a href="~/AdminMovie/EditMovie/@item.Id" class="btn btn-s btn-info">Düzenle</a>
+                            <button type="button" class="btn btn-s btn-danger" data-toggle="modal" data-target="#deleteMovieModal-@item.Id">Sil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteMovieModal-@item.Id" tabindex="-1" role="dialog" aria-labelledby="deleteMovieModalLabel-@item.Id" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteMovieModalLabel-@item.Id">Silme Onayı</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>@item.Name filmini silmek istediğinize emin misiniz?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                            <form asp-action="DeleteMovie" method="post">
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger">Onayla</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="addMovieModal" tabindex="-1" role="dialog" aria-labelledby="addMovieModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form asp-action="AddNewMovie" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addMovieModalLabel">Yeni Film Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form content -->
+                    <div class="form-group">
+                        <label for="Name">Film Adı</label>
+                        <input type="text" class="form-control" id="Name" name="Movie.Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Trailer">Fragman Urlsi</label>
+                        <input type="text" class="form-control" id="Trailer" name="Movie.Trailer" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Director">Yönetmen İsmi</label>
+                        <input type="text" class="form-control" id="Director" name="Movie.Director" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ScreenTime">Süresi</label>
+                        <input type="text" class="form-control" id="ScreenTime" name="Movie.ScreenTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Score">Puanı</label>
+                        <input type="number" step="0.1" class="form-control" id="Score" name="Movie.Score" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Açıklama</label>
+                        <textarea class="form-control" id="Description" name="Movie.Description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="CategoryId">Kategori</label>
+                        <select class="form-control" id="CategoryId" name="Movie.CategoryId">
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Value">@category.Text</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="PictureFile">Film Afişi</label>
+                        <input type="file" class="form-control-file" id="PictureFile" name="PictureFile">
+                    </div>
+                    <div class="form-group">
+                        <label for="Picture2File">Film Arkaplan</label>
+                        <input type="file" class="form-control-file" id="Picture2File" name="Picture2File">
+                    </div>
+                    <div class="form-group">
+                        <label for="DirectorPicture">Yönetmen Resmi</label>
+                        <input type="file" class="form-control-file" id="DirectorPicture" name="DirectorPicture">
+                    </div>
+                    <div class="form-group">
+                        <label for="Is3D">3D mi?</label>
+                        <input type="checkbox" id="Is3D" name="Movie.Is3D">
+                    </div>
+                    <div class="form-group">
+                        <label for="IsDubbed">Dublajlı mı?</label>
+                        <input type="checkbox" id="IsDubbed" name="Movie.IsDubbed">
+                    </div>
+                    <div class="form-group">
+                        <label for="IsLocal">Yerli mi?</label>
+                        <input type="checkbox" id="IsLocal" name="Movie.IsLocal">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

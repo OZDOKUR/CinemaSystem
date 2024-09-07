@@ -1,0 +1,136 @@
+﻿@using Entities.Concrete
+@model RegisterViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/all.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/animate.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/flaticon.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/odometer.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/nice-select.css">
+    <link rel="stylesheet" href="~/MovieTemp/assets/css/main.css">
+
+    <link rel="shortcut icon" href="~/MovieTemp/assets/images/favicon.png" type="image/x-icon">
+
+    <title>Kayıt Ol</title>
+
+
+</head>
+
+<body>
+
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <section class="account-section bg_img" data-background="~/MovieTemp/assets/images/account/account-bg.jpg">
+        <div class="container">
+            <div class="padding-top padding-bottom">
+                <div class="account-area">
+                    <div class="section-header-3">
+                        <h2 class="cate">Hoş Geldiniz</h2>
+                    </div>
+                    <div class="form-group">
+                        <form asp-action="Index" method="post" class="account-form">
+
+                            <div class="form-group" style="display: flex; gap: 10px;">
+                                <div style="flex: 1;">
+                                    <label for="name">Ad<span>*</span></label>
+                                    <input type="text" placeholder="Adınızı Giriniz" id="name" name="Name" required>
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label for="surname">Soyad<span>*</span></label>
+                                    <input type="text" placeholder="Soyadınızı Giriniz" id="surname" name="Surname" required>
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="birthdate">Doğum Tarihi<span>*</span></label>
+                                <input type="date" id="birthdate" name="BirthDate" required>
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender">Cinsiyet<span>*</span></label>
+                                @Html.DropDownListFor(m => m.Gender, Model.GenderOptions, "Cinsiyet Seçiniz", new { @required = "required", style = "background-color: #031637;" })
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email1">E-posta<span>*</span></label>
+                                <input type="text" placeholder="E-postanızı Giriniz" id="email1" name="Email" required>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phoneNumber">Telefon Numarası<span>*</span></label>
+                                <input type="text" placeholder="Telefon Numaranızı Giriniz" id="phoneNumber" name="PhoneNumber" required>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pass1">Şifre<span>*</span></label>
+                                <input type="password" placeholder="Şifre" id="pass1" name="Password" required>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pass2">Şifre Tekrar<span>*</span></label>
+                                <input type="password" placeholder="Şifre Tekrar" id="pass2" name="ConfirmPassword" required>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <input type="submit" value="Kayıt Ol">
+                            </div>
+                        </form>
+                    </div>
+
+
+
+
+                    <div class="option">
+                        Zaten hesabınız var mı? <a href="~/Login/Index">Giriş Yap</a>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+
+    <script src="~/MovieTemp/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="~/MovieTemp/assets/js/modernizr-3.6.0.min.js"></script>
+    <script src="~/MovieTemp/assets/js/plugins.js"></script>
+    <script src="~/MovieTemp/assets/js/bootstrap.min.js"></script>
+    <script src="~/MovieTemp/assets/js/isotope.pkgd.min.js"></script>
+    <script src="~/MovieTemp/assets/js/magnific-popup.min.js"></script>
+    <script src="~/MovieTemp/assets/js/owl.carousel.min.js"></script>
+    <script src="~/MovieTemp/assets/js/wow.min.js"></script>
+    <script src="~/MovieTemp/assets/js/countdown.min.js"></script>
+    <script src="~/MovieTemp/assets/js/odometer.min.js"></script>
+    <script src="~/MovieTemp/assets/js/viewport.jquery.js"></script>
+    <script src="~/MovieTemp/assets/js/nice-select.js"></script>
+    <script src="~/MovieTemp/assets/js/main.js"></script>
+</body>
+
+
+</html>

@@ -1,0 +1,215 @@
+﻿@model CinemaSystem.Models.SeatPlanViewModel
+
+@{
+    ViewData["Title"] = "Seat Plan";
+}
+
+<div class="seat-plan-section padding-bottom padding-top">
+    <div class="container">
+        <div class="screen-area">
+            <h4 class="screen">Screen</h4>
+            <div class="screen-thumb">
+                <img src="~/MovieTemp/assets/images/movie/screen-thumb.png" alt="movie">
+            </div>
+            <div class="screen-wrapper">
+                <ul class="seat-area">
+                    @for (char row = 'A'; row <= 'G'; row++)
+                    {
+                        <li class="seat-line">
+                            <span>@row</span>
+                            <ul class="seat--area">
+                                @for (int seatNumber = 1; seatNumber <= 14; seatNumber++)
+                                {
+                                    var seatId = $"{row}{seatNumber}";
+                                    var isOccupied = Model.OccupiedSeats.Contains(seatId);
+                                    var isSelected = Model.SelectedSeats.Contains(seatId);
+                                    var seatClass = isOccupied ? "seat occupied" : (isSelected ? "seat selected" : "seat unselected");
+                                    var seatImage = isOccupied
+                                    ? Url.Content("~/MovieTemp/assets/images/movie/seat01.png")
+                                    : (isSelected
+                                    ? Url.Content("~/MovieTemp/assets/images/movie/seat01-booked.png")
+                                    : Url.Content("~/MovieTemp/assets/images/movie/seat01-free.png"));
+
+                                    <li class="front-seat">
+                                        <ul>
+                                            <li class="single-seat @seatClass" id="@seatId" onclick="toggleSeat('@seatId')">
+                                                <img src="@seatImage" alt="seat" id="img-@seatId">
+                                                <span class="sit-num">@seatId</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="proceed-book bg_img" data-background="~/MovieTemp/assets/images/movie/movie-bg-proceed.jpg">
+            <div class="proceed-to-book">
+                <div class="book-item">
+                    <span>Seçilen Koltuklar</span>
+                    <h3 class="title" id="selectedSeatsDisplay">@Model.SelectedSeats</h3>
+                </div>
+                <div class="book-item">
+                    <span>Toplam Ücret</span>
+                    <h3 class="title" id="totalPrice">200 TL</h3>
+                </div>
+                <div class="book-item">
+                    <form asp-action="SeatPlan" method="post" id="seatForm">
+                        <input type="hidden" name="SeanceId" value="@Model.SeanceId" />
+                        <input type="hidden" name="SelectedSeats" id="selectedSeatsInput" />
+                        <button type="button" class="custom-button text-white" onclick="showPaymentPopup()">Devam Et</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="paymentPopup" class="payment-popup">
+    <div class="payment-popup-content">
+        <span class="close" onclick="closePaymentPopup()">&times;</span>
+        <form id="paymentForm" onsubmit="submitPaymentForm(event)">
+            <div class="form-group">
+                <label for="cardNumber">Kart Numarası:</label>
+                <input type="text" id="cardNumber" name="cardNumber" placeholder="Kart numaranızı girin" required>
+            </div>
+            <div class="form-group">
+                <label for="expiryDate">Son Kullanma Tarihi:</label>
+                <input type="text" id="expiryDate" name="expiryDate" placeholder="AA/YY" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" placeholder="CVV" required>
+            </div>
+            <button type="submit" class="custom-button text-white">Ödemeyi Tamamla</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleSeat(seatId) {
+            var seat = document.getElementById(seatId);
+            var seatImage = document.getElementById('img-' + seatId);
+
+            if (seat) {
+                if (seat.classList.contains('unselected')) {
+                    seat.classList.remove('unselected');
+                    seat.classList.add('selected');
+                    seatImage.src = '@Url.Content("~/MovieTemp/assets/images/movie/seat01-booked.png")';
+                } else if (seat.classList.contains('selected')) {
+                    seat.classList.remove('selected');
+                    seat.classList.add('unselected');
+                    seatImage.src = '@Url.Content("~/MovieTemp/assets/images/movie/seat01-free.png")';
+                }
+                updateSelectedSeats();
+            }
+        }
+
+        function updateSelectedSeats() {
+            var selectedSeats = document.querySelectorAll('.seat.selected');
+            var selectedSeatIds = [];
+            selectedSeats.forEach(function (seat) {
+                selectedSeatIds.push(seat.id);
+            });
+            document.getElementById('selectedSeatsDisplay').innerText = selectedSeatIds.join(', ');
+            document.getElementById('selectedSeatsInput').value = selectedSeatIds.join(',');
+
+            var totalPrice = selectedSeatIds.length * 100;
+            document.getElementById('totalPrice').innerText = totalPrice + ' TL';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            updateSelectedSeats();
+        });
+
+        function showPaymentPopup() {
+            var popup = document.getElementById("paymentPopup");
+            popup.style.display = "block";
+        }
+
+        function closePaymentPopup() {
+            var popup = document.getElementById("paymentPopup");
+            popup.style.display = "none";
+        }
+
+        function submitPaymentForm(event) {
+            event.preventDefault();
+
+          
+            closePaymentPopup();
+
+           
+            document.getElementById('seatForm').submit();
+        }
+    </script>
+
+    <style>
+        .payment-popup {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .payment-popup-content {
+            background-color: #040360;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            color: #31d7a9;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                color: #31d7a9;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+        .custom-button {
+            background-color: #31d7a9;
+            color: #040360;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+            .custom-button:hover {
+                background-color: #28b996;
+            }
+    </style>
+}

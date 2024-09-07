@@ -1,0 +1,138 @@
+﻿@model CinemaSystem.Models.CategoryViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<a data-toggle="modal" data-target="#addCategoryModal">
+    <button class="btn btn-success">Yeni Tür Ekle +</button>
+</a>
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        @foreach (var item in Model.CategoryList)
+        {
+            <div class="col-lg-3">
+                <div class="contact-box center-version">
+
+                    <a href="/Categories/forum/@item.Id">
+
+                        <h3 class="m-b-xs"><strong>@item.Name</strong></h3>
+                    </a>
+                    <div class="contact-box-footer">
+                        <div class="m-t-xs btn-group">
+                            <tr>
+                                <td>
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#editCategoryModal" data-id="@item.Id" data-name="@item.Name">Düzenle</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteCategoryModal" data-id="@item.Id">Sil</button>
+                                </td>
+                            </tr>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Category Modal -->
+<div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form asp-action="AddNewCategory" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Yeni Tür Ekle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tür İsmi</label>
+                        <input type="text" name="Category.Name" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-info">Ekle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form asp-action="EditCategory" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Kategori Düzenle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="EditId" name="Category.Id" />
+                    <div class="form-group">
+                        <label for="EditName">Tür İsmi</label>
+                        <input class="form-control" type="text" id="EditName" name="Category.Name">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">İptal</button>
+                    <button class="btn btn-primary" type="submit">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="deleteForm" asp-action="DeleteCategory" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCategoryModalLabel">Türü Sil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="DeleteId" name="Id" />
+                    <p>Bu türü silmek istediğinizden emin misiniz?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-danger">Sil</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#editCategoryModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+
+            var modal = $(this);
+            modal.find('#EditId').val(id);
+            modal.find('#EditName').val(name);
+        });
+
+        $('#deleteCategoryModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+
+            var modal = $(this);
+            modal.find('#DeleteId').val(id);
+        });
+    </script>
+}
